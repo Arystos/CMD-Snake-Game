@@ -1,5 +1,8 @@
 #include "console.h"
 #include <windows.h>
+#include <iostream>
+
+using namespace std;
 
 void gotoxy(int x, int y) {
     COORD coord;
@@ -9,6 +12,9 @@ void gotoxy(int x, int y) {
 }
 
 void ResizeAndCenterConsole(int width, int height) {
+    // Set console title
+    SetConsoleTitle(TEXT("Snake Game")); // Use the TEXT macro to convert the string to a wide-character string
+
     // Resizes, repositions, and modifies console window properties.
 
     // Get handle to console and desktop windows
@@ -33,6 +39,13 @@ void ResizeAndCenterConsole(int width, int height) {
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(out, &cursorInfo);
 
+    // If the cmd window is closed in the meantime off the game enable it again 
+    // (otherwise the mouse is frozen)
+    if (console == NULL) {
+        AllocConsole();
+        console = GetConsoleWindow();
+    }
+
     // Disable maximize button and resizing of console window
     LONG lStyle = GetWindowLong(console, GWL_STYLE);
     lStyle &= ~(WS_MAXIMIZEBOX | WS_SIZEBOX);
@@ -40,5 +53,3 @@ void ResizeAndCenterConsole(int width, int height) {
     HMENU hMenu = GetSystemMenu(console, FALSE);
     EnableMenuItem(hMenu, SC_MAXIMIZE, MF_BYCOMMAND | MF_GRAYED);
 }
-
-// Rest of the functions...

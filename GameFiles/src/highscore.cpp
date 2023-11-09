@@ -1,7 +1,7 @@
 #include "highscore.h"
+#include "console.h"
 #include <fstream>
 #include <iostream>
-#include "console.h"
 
 using namespace std;
 
