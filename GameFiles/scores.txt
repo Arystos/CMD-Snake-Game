@@ -1,3 +1,6 @@
 620 Arystos
 510 Aristide
+210 Dumb
+200 ffffffff
+180 Dumb
 80 wa

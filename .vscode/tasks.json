@@ -10,6 +10,7 @@
                 "${workspaceFolder}\\GameFiles\\snake.exe",
                 "${workspaceFolder}\\GameFiles\\src\\main.cpp",
                 "${workspaceFolder}\\GameFiles\\src\\game.cpp",
+                "${workspaceFolder}\\GameFiles\\src\\draw.cpp",
                 "${workspaceFolder}\\GameFiles\\src\\console.cpp",
                 "${workspaceFolder}\\GameFiles\\src\\highscore.cpp",
                 "-I${workspaceFolder}\\GameFiles\\include"

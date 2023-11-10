@@ -45,66 +45,6 @@ void Setup()
     score = 0;
 }
 
-void DrawTopOrBottomWall() {
-    for (int i = 0; i < width + 2; i++) {
-        cout << WALL;
-    }
-    cout << endl;
-}
-
-bool DrawFruit(int i, int j) {
-    for (const auto& fruit : fruits) {
-        if (fruit.first == j && fruit.second == i) {
-            cout << FRUIT;
-            return true;
-        }
-    }
-    return false;
-}
-
-bool DrawSnakeBody(int i, int j) {
-    for (const auto& segment : tail) {
-        if (segment.first == j && segment.second == i) {
-            cout << SNAKE_BODY;
-            return true;
-        }
-    }
-    return false;
-}
-
-void DrawGameBoardCell(int i, int j) {
-    if (j == 0) cout << WALL;
-
-    if (i == y && j == x) cout << SNAKE_HEAD;
-    else if (!DrawFruit(i, j) && !DrawSnakeBody(i, j)) cout << EMPTY_SPACE;
-
-    if (j == width - 1) cout << WALL;
-}
-
-void DrawGameBoard() {
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            DrawGameBoardCell(i, j);
-        }
-        cout << endl;
-    }
-}
-
-void DisplayScoreAndHighScores() {
-    gotoxy(0, height + 2);
-    cout << "Score:" << score << endl;
-    DisplayHighScores();
-}
-
-void Draw() {
-    gotoxy(0, 0);
-    DrawTopOrBottomWall();
-    DrawGameBoard();
-    DrawTopOrBottomWall();
-    DisplayScoreAndHighScores();
-}
-
-
 void Input()
 {
     if (_kbhit())

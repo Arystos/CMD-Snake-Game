@@ -1,6 +1,7 @@
 #include "game.h"
 #include "console.h"
 #include "highscore.h"
+#include "draw.h"
 #include <unistd.h>
 #include <windows.h>
 
