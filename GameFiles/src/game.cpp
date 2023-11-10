@@ -20,6 +20,12 @@ vector<pair<int, int>> fruits;
 int moveCounter = 0;                 // Counter for moves
 const int FRUIT_SPAWN_INTERVAL = 10; // Fruit spawn every 10 moves
 
+const char WALL = '#';
+const char SNAKE_HEAD = 'O';
+const char FRUIT = 'F';
+const char SNAKE_BODY = 'o';
+const char EMPTY_SPACE = ' ';
+
 void SpawnFruit()
 {
     // Spawn a new fruit at a random location
@@ -39,71 +45,65 @@ void Setup()
     score = 0;
 }
 
-void Draw()
-{
-    gotoxy(0, 0); // Reset cursor position to top-left corner
-
-    for (int i = 0; i < width + 2; i++) // Draw the top wall
-        cout << "#";
+void DrawTopOrBottomWall() {
+    for (int i = 0; i < width + 2; i++) {
+        cout << WALL;
+    }
     cout << endl;
+}
 
-    // Draw the game board
+bool DrawFruit(int i, int j) {
+    for (const auto& fruit : fruits) {
+        if (fruit.first == j && fruit.second == i) {
+            cout << FRUIT;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool DrawSnakeBody(int i, int j) {
+    for (const auto& segment : tail) {
+        if (segment.first == j && segment.second == i) {
+            cout << SNAKE_BODY;
+            return true;
+        }
+    }
+    return false;
+}
+
+void DrawGameBoardCell(int i, int j) {
+    if (j == 0) cout << WALL;
+
+    if (i == y && j == x) cout << SNAKE_HEAD;
+    else if (!DrawFruit(i, j) && !DrawSnakeBody(i, j)) cout << EMPTY_SPACE;
+
+    if (j == width - 1) cout << WALL;
+}
+
+void DrawGameBoard() {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-            // Left wall
-            if (j == 0)
-                cout << "#"; 
-
-            // Check for snake head, fruits, and snake body
-            if (i == y && j == x)
-                cout << "O"; // Snake head
-            else {
-                bool printed = false;
-
-                // Check for fruits
-                for (const auto& fruit : fruits) {
-                    if (fruit.first == j && fruit.second == i) {
-                        cout << "F"; // Fruit
-                        printed = true;
-                        break;
-                    }
-                }
-
-                // Check for snake body
-                if (!printed) {
-                    for (const auto& segment : tail) {
-                        if (segment.first == j && segment.second == i) {
-                            cout << "o"; // Snake body segment
-                            printed = true;
-                            break;
-                        }
-                    }
-                }
-
-                // Empty space
-                if (!printed)
-                    cout << " ";
-            }
-
-            // Right wall
-            if (j == width - 1)
-                cout << "#";
+            DrawGameBoardCell(i, j);
         }
         cout << endl;
     }
+}
 
-    // Draw the bottom wall
-    for (int i = 0; i < width + 2; i++)
-        cout << "#";
-    cout << endl;
-
-    // Show current score
+void DisplayScoreAndHighScores() {
     gotoxy(0, height + 2);
     cout << "Score:" << score << endl;
-
-    // Show top three high scores
     DisplayHighScores();
 }
+
+void Draw() {
+    gotoxy(0, 0);
+    DrawTopOrBottomWall();
+    DrawGameBoard();
+    DrawTopOrBottomWall();
+    DisplayScoreAndHighScores();
+}
+
 
 void Input()
 {
@@ -225,14 +225,6 @@ void Algorithm()
             ++it;
         }
     }
-
-    // if (x == fruitX && y == fruitY)
-    // {
-    //     score += 10;
-    //     fruitX = rand() % (width - 2) + 1;
-    //     fruitY = rand() % (height - 2) + 1;
-    //     tail.push_back({fruitX, fruitY});
-    // }
 }
 
 void GameOver()
