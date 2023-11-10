@@ -17,14 +17,11 @@ int x, y, score;
 bool gameOver;
 vector<pair<int, int>> tail;
 vector<pair<int, int>> fruits;
+vector<pair<int, int>> obstacles;
 int moveCounter = 0;                 // Counter for moves
-const int FRUIT_SPAWN_INTERVAL = 10; // Fruit spawn every 10 moves
-
-const char WALL = '#';
-const char SNAKE_HEAD = 'O';
-const char FRUIT = 'F';
-const char SNAKE_BODY = 'o';
-const char EMPTY_SPACE = ' ';
+int moveCounterForObstacles = 0;     // Counter for obstacles
+int moveCounterForRemovingObstacles = 0; // Counter for removing obstacles
+const int FRUIT_SPAWN_INTERVAL = 16; // Fruit spawn every 10 moves
 
 void SpawnFruit()
 {
@@ -34,7 +31,29 @@ void SpawnFruit()
     fruits.push_back(make_pair(fruitX, fruitY));
 }
 
-void Setup()
+void SpawnObstacles() {
+    // Spawn one obstacle at a random location, avoid spawning on the snake or on the tails
+    int obstacleX = rand() % (width - 2) + 1;
+    int obstacleY = rand() % (height - 2) + 1;
+    obstacles.push_back(make_pair(obstacleX, obstacleY));
+    for (int i = 0; i < tail.size(); i++) { // Avoid spawning on the snake's tail
+        if (obstacleX == tail[i].first && obstacleY == tail[i].second) {
+            obstacles.pop_back();
+            SpawnObstacles();
+        }
+    }
+    if (obstacleX == x && obstacleY == y) { // Avoid spawning on the snake's head
+        obstacles.pop_back();
+        SpawnObstacles();
+    }
+}
+
+void RemoveObstacles() {
+    // Remove obstacles in order of creation
+    obstacles.erase(obstacles.begin());
+}
+
+void Setup() // Initialize variables, set starting positions, etc.
 {
     gameOver = false;
     dir = STOP;
@@ -42,10 +61,12 @@ void Setup()
     y = height / 2;
     srand(time(0));
     SpawnFruit();
+    SpawnObstacles();
+    RemoveObstacles();
     score = 0;
 }
 
-void Input()
+void Input() // Get input from the user
 {
     if (_kbhit())
     {
@@ -98,12 +119,13 @@ void Input()
     }
 }
 
-void Algorithm()
+void Algorithm() // Handle game logic
 {
-    pair<int, int> prev(x, y);
-    pair<int, int> prev2;
+    pair<int, int> prev(x, y);  // Previous position of the snake's head
+    pair<int, int> prev2;       // Previous position of the snake's body
     int n = tail.size();
-    if (n > 0)
+
+    if (n > 0) // Move the tail
     {
         tail[0] = prev;
         for (int i = 1; i < n; i++)
@@ -113,7 +135,8 @@ void Algorithm()
             prev = prev2;
         }
     }
-    switch (dir)
+
+    switch (dir) // Move the snake in the direction specified by the user
     {
     case LEFT:
         x--;
@@ -131,6 +154,7 @@ void Algorithm()
         break;
     }
 
+    // Check if snake hits a wall
     if (x >= width)
         x = 0;
     else if (x < 0)
@@ -140,19 +164,35 @@ void Algorithm()
     else if (y < 0)
         y = height - 1;
 
+    // Check if snake hits itself or an obstacle
     for (int i = 0; i < n; i++)
     {
         if (tail[i].first == x && tail[i].second == y)
         {
             gameOver = true;
         }
+
+        if (x == obstacles[i].first && y == obstacles[i].second) {
+            gameOver = true;
+        }
     }
 
     // Increase moveCounter and spawn fruit if needed
     moveCounter++;
-    if (moveCounter >= FRUIT_SPAWN_INTERVAL) {
+    if (moveCounter >= FRUIT_SPAWN_INTERVAL) { // Spawn fruit every 10 moves
         SpawnFruit();
         moveCounter = 0;
+    }
+
+    // Spawn obstacles
+    moveCounterForObstacles++;
+    if (moveCounterForObstacles >= FRUIT_SPAWN_INTERVAL * 2) {
+        SpawnObstacles();
+        moveCounterForObstacles = 0;
+    }
+    if (moveCounterForObstacles >= FRUIT_SPAWN_INTERVAL * 4) {
+        RemoveObstacles();
+        moveCounterForRemovingObstacles = 0;
     }
 
     // Check if snake eats a fruit
@@ -167,7 +207,26 @@ void Algorithm()
     }
 }
 
-void GameOver()
+// Restart snake, fruits, obstacles, score, movecounters, tail, etc.
+void RestartVariables() {
+    gameOver = false;
+    dir = STOP;
+    x = width / 2;
+    y = height / 2;
+    srand(time(0));
+    fruits.clear();
+    obstacles.clear();
+    tail.clear();
+    SpawnFruit();
+    SpawnObstacles();
+    RemoveObstacles();
+    score = 0;
+    moveCounter = 0;
+    moveCounterForObstacles = 0;
+    moveCounterForRemovingObstacles = 0;
+}
+
+bool GameOver()
 {
     system("cls"); // Clear the screen
     cout << "Game Over!\nScore: " << score << endl;
@@ -175,6 +234,7 @@ void GameOver()
     string name;
     cin >> name;
     StoreHighScore(name, score);
+    char choice;
 
     // Reload scores in case the new score is a high score
     highscores.clear();
@@ -183,9 +243,23 @@ void GameOver()
     // Display high scores without extra spacing
     DisplayHighScores(false);
 
-    // Wait for input before clearing the screen and ending the game
-    cout << "\nPress any key to continue...";
-    system("pause>nul"); // no extra characters are shown when a key is pressed
+    // Ask to the player if he want to continue again (y for yes and n for no)
+    cout << "\nDo you want to play again? (y/n): ";
+    cin >> choice;
 
-    system("cls"); // Clear the screen one more time before exiting
+    // Handle invalid input
+    while (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N') {
+        system("cls");
+        cout << "\nFucking dumb! Enter a valid input!";
+        cin >> choice;
+    }
+
+    if (choice == 'y' || choice == 'Y') {
+        system("cls");
+        RestartVariables();
+        return false; // Restart the game
+    }
+        
+    else
+        return true;
 }

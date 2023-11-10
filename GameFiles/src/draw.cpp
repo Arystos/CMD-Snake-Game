@@ -1,15 +1,17 @@
 #include "draw.h"
 #include "console.h"
 #include "highscore.h"
+#include "game.h"
 #include <iostream>
 
 using namespace std;
 
 extern const char WALL = '#';
 extern const char SNAKE_HEAD = 'O';
-extern const char FRUIT = 'F';
+extern const char FRUIT = 4;
 extern const char SNAKE_BODY = 'o';
 extern const char EMPTY_SPACE = ' ';
+extern const char OBSTACLE = 219;
 
 void DrawTopOrBottomWall() {
     for (int i = 0; i < width + 2; i++) {
@@ -22,6 +24,16 @@ bool DrawFruit(int i, int j) {
     for (const auto& fruit : fruits) {
         if (fruit.first == j && fruit.second == i) {
             cout << FRUIT;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool DrawObstacle(int i, int j) {
+    for (const auto& obstacle : obstacles) {
+        if (obstacle.first == j && obstacle.second == i) {
+            cout << OBSTACLE;
             return true;
         }
     }
@@ -42,7 +54,9 @@ void DrawGameBoardCell(int i, int j) {
     if (j == 0) cout << WALL;
 
     if (i == y && j == x) cout << SNAKE_HEAD;
-    else if (!DrawFruit(i, j) && !DrawSnakeBody(i, j)) cout << EMPTY_SPACE;
+    else if (!DrawFruit(i, j) && !DrawSnakeBody(i, j) && !DrawObstacle(i, j)) cout << EMPTY_SPACE;
+
+    // If the obstacle has been removed print an empty space
 
     if (j == width - 1) cout << WALL;
 }
@@ -60,15 +74,15 @@ void DisplayHighScores(bool includeSpacing) {
     int posY;
     int height = 20;
     if (includeSpacing) {
-        posY = height + 3; // Position to start displaying high scores during the game
+        posY = height + 3;
     } else {
-        posY = 2; // Position to start displaying high scores after the game
+        posY = 2;
     }
     int scoreBoardWidth = 25; // Adjust the width as needed
     gotoxy(0, posY++);
-    cout << "+"; // top-left corner
-    for (int i = 0; i < scoreBoardWidth; ++i) cout << "-"; // top border
-    cout << "+"; // top-right corner
+    cout << "+";                                            // top-left corner
+    for (int i = 0; i < scoreBoardWidth; ++i) cout << "-";  // top border
+    cout << "+";                                            // top-right corner
 
     int count = 0;
     cout << endl;

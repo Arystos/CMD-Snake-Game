@@ -12,11 +12,13 @@ extern const int height;
 extern int x, y, fruitX, fruitY, score;
 extern bool gameOver;
 extern std::vector<std::pair<int, int>> tail;
+extern int moveCounterForRemovingObstacles;
+extern int moveCounterForObstacles;
 
 void Setup();
 void Draw();
 void Input();
 void Algorithm();
-void GameOver();
+bool GameOver();
 
 #endif

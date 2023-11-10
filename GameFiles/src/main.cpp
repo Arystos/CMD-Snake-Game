@@ -9,21 +9,27 @@ int main() {
     // Desired console window size
     int consoleWidth = 700;  // Adjust as necessary
     int consoleHeight = 600; // Adjust as necessary
+    bool gameEnded;
 
     // Resize and center the console window
     ResizeAndCenterConsole(consoleWidth, consoleHeight);
 
-    LoadHighScores();
-    Setup();
-    Draw(); // Draw the initial state
+    while(!gameEnded) {
 
-    while (!gameOver) {
+        // Initialize variables, set starting positions, etc.
+        LoadHighScores();
+        Setup();
+        Draw(); // Draw the initial state
+
+        // Game loop
+        while (!gameOver) {
         Input();
         Algorithm();
         Draw();
-        Sleep(100); // slow down the game for visibility
-    }
+        Sleep(120); // slow down the game for visibility
+        }
 
-    GameOver();
+        gameEnded = GameOver(); // Display game over message and prompt for replay
+    }
     return 0;
 }
