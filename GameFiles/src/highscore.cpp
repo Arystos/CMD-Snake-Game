@@ -22,7 +22,7 @@ void LoadHighScores() {
 
 void StoreHighScore(const string& name, int score) {
     highscores[score] = name;
-    ofstream file("/scores.txt", ios::out | ios::trunc);
+    ofstream file("scores.txt", ios::out | ios::trunc);
     if (file.is_open()) {
         for (const auto& pair : highscores) {
             file << pair.first << " " << pair.second << endl;
