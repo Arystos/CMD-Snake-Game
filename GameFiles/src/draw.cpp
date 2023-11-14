@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// Constants
 extern const char WALL = '#';
 extern const char SNAKE_HEAD = 'O';
 extern const char FRUIT = 4;
@@ -51,15 +52,20 @@ bool DrawSnakeBody(int i, int j) {
 }
 
 void DrawGameBoardCell(int i, int j) {
-    if (j == 0) cout << WALL;
-
-    if (i == y && j == x) cout << SNAKE_HEAD;
-    else if (!DrawFruit(i, j) && !DrawSnakeBody(i, j) && !DrawObstacle(i, j)) cout << EMPTY_SPACE;
-
-    // If the obstacle has been removed print an empty space
-
-    if (j == width - 1) cout << WALL;
+    if (i == y && j == x) {
+        cout << SNAKE_HEAD; // Draw the snake's head
+    } else if (DrawSnakeBody(i, j)) {
+        // Snake body is drawn within the function
+    } else if (DrawFruit(i, j)) {
+        // Fruit is drawn within the function
+    } else if (DrawObstacle(i, j)) {
+        // Obstacle is drawn within the function
+    }
+    else {
+        cout << EMPTY_SPACE; // Draw empty space
+    }
 }
+
 
 void DrawGameBoard() {
     for (int i = 0; i < height; i++) {
