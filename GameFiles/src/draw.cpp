@@ -32,8 +32,8 @@ bool DrawFruit(int i, int j) {
 }
 
 bool DrawObstacle(int i, int j) {
-    for (const auto& obstacle : obstacles) {
-        if (obstacle.first == j && obstacle.second == i) {
+    for (const auto& obstacle : obstacles) { // Draw obstacles
+        if (obstacle.first == j && obstacle.second == i) { // If the current cell is an obstacle
             cout << OBSTACLE;
             return true;
         }
@@ -52,6 +52,9 @@ bool DrawSnakeBody(int i, int j) {
 }
 
 void DrawGameBoardCell(int i, int j) {
+
+    if (j == 0) cout << WALL; // Draw left wall
+
     if (i == y && j == x) {
         cout << SNAKE_HEAD; // Draw the snake's head
     } else if (DrawSnakeBody(i, j)) {
@@ -64,6 +67,8 @@ void DrawGameBoardCell(int i, int j) {
     else {
         cout << EMPTY_SPACE; // Draw empty space
     }
+
+    if (j == width - 1) cout << WALL; // Draw right wall
 }
 
 

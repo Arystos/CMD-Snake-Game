@@ -65,5 +65,8 @@
     "C_Cpp.errorSquiggles": "enabled",
     "code-runner.executorMap": {
         "cpp": "cd $dir && g++ -o $fileNameWithoutExt $fileName -Iinclude && $dir$fileNameWithoutExt"
-    }
+    },
+    "cSpell.words": [
+        "highscores"
+    ]
 }

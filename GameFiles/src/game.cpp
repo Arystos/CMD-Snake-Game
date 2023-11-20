@@ -207,14 +207,29 @@ void Algorithm() // Handle game logic
         moveCounterForObstacles = 0;
     }
 
-    // Check if snake hits itself or an obstacle
+    // Despawn obstacles
+    moveCounterForRemovingObstacles++;
+    if (moveCounterForRemovingObstacles >= FRUIT_SPAWN_INTERVAL * 8)
+    {
+        if (!obstacles.empty())
+        {
+            obstacles.pop_back();
+        }
+        moveCounterForRemovingObstacles = 0;
+    }
+
+    // Check if snake hits itself
     for (int i = 0; i < n; i++)
     {
         if (tail[i].first == x && tail[i].second == y)
         {
             gameOver = true;
         }
+    }
 
+    // Check if snake hits an obstacle
+    for (int i = 0; i < obstacles.size(); i++)
+    {
         if (x == obstacles[i].first && y == obstacles[i].second)
         {
             gameOver = true;
@@ -223,7 +238,7 @@ void Algorithm() // Handle game logic
 
 }
 
-// Restart snake, fruits, obstacles, score, movecounters, tail, etc.
+// Restart snake, fruits, obstacles, score, move counters, tail, etc.
 void RestartVariables()
 {
     gameOver = false;
