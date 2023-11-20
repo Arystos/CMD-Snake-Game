@@ -15,7 +15,7 @@ using namespace std;
 // Game settings
 const int WIDTH = 20;
 const int HEIGHT = 20;
-const int FRUIT_SPAWN_INTERVAL = 5;     // Fruit spawn every 10 moves
+const int FRUIT_SPAWN_INTERVAL = 20;     // Fruit spawn every n moves
 
 // Game state
 Direction direction;
@@ -31,15 +31,14 @@ int moveCounterForObstacles = 0;         // Counter for obstacles
 int moveCounterForRemovingObstacles = 0; // Counter for removing obstacles
 
 
-void SpawnFruit()
+void SpawnFruit() // Spawn a new fruit at a random location
 {
-    // Spawn a new fruit at a random location
     int fruitX = rand() % (WIDTH - 2) + 1;
     int fruitY = rand() % (HEIGHT - 2) + 1;
     fruits.push_back(make_pair(fruitX, fruitY));
 }
 
-void SpawnObstacles()
+void SpawnObstacles() // Spawn a new obstacle at a random location
 {
     vector<pair<int, int>> validLocations; // Valid locations to spawn obstacles
 
