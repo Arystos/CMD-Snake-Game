@@ -71,7 +71,6 @@ void DrawGameBoardCell(int i, int j) {
     if (j == width - 1) cout << WALL; // Draw right wall
 }
 
-
 void DrawGameBoard() {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {

@@ -190,8 +190,8 @@ void Algorithm() // Handle game logic
         if (x == it->first && y == it->second)
         {
             score += 10;
-            it = fruits.erase(it); // Remove eaten fruit
-            tail.push_back({x, y});
+            it = fruits.erase(it);  // Remove eaten fruit
+            tail.push_back({x, y}); // Grow the snake
         }
         else
         {
@@ -213,7 +213,8 @@ void Algorithm() // Handle game logic
     {
         if (!obstacles.empty())
         {
-            obstacles.pop_back();
+            //obstacles.pop_back(); // Remove the last obstacle
+            obstacles.erase(obstacles.begin()); // Remove the first obstacle
         }
         moveCounterForRemovingObstacles = 0;
     }
