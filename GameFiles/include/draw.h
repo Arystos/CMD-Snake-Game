@@ -5,8 +5,8 @@
 #include <utility> // for std::pair
 
 // Forward declarations
-extern const int width;
-extern const int height;
+extern const int WIDTH;
+extern const int HEIGHT;
 extern int x, y, score;
 extern std::vector<std::pair<int, int>> tail;
 extern std::vector<std::pair<int, int>> fruits;

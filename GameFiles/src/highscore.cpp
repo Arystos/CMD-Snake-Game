@@ -7,8 +7,7 @@ using namespace std;
 
 map<int, string, greater<int>> highscores;
 
-void LoadHighScores() {
-    // Implement LoadHighScores here
+void LoadHighScores() { // Load high scores from file
     std::ifstream file("scores.txt");
     if (file.is_open()) {
         int score;
@@ -20,7 +19,7 @@ void LoadHighScores() {
     }
 }
 
-void StoreHighScore(const string& name, int score) {
+void StoreHighScore(const string& name, int score) { // Store high score in file
     highscores[score] = name;
     ofstream file("scores.txt", ios::out | ios::trunc);
     if (file.is_open()) {

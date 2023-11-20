@@ -14,12 +14,16 @@ extern const char SNAKE_BODY = 'o';
 extern const char EMPTY_SPACE = ' ';
 extern const char OBSTACLE = 219;
 
+// ----------------- WALL DRAWING FUNCTIONS -----------------
+
 void DrawTopOrBottomWall() {
-    for (int i = 0; i < width + 2; i++) {
+    for (int i = 0; i < WIDTH + 2; i++) {
         cout << WALL;
     }
     cout << endl;
 }
+
+// ----------------- GAME BOARD DRAWING FUNCTIONS -----------------
 
 bool DrawFruit(int i, int j) {
     for (const auto& fruit : fruits) {
@@ -68,17 +72,19 @@ void DrawGameBoardCell(int i, int j) {
         cout << EMPTY_SPACE; // Draw empty space
     }
 
-    if (j == width - 1) cout << WALL; // Draw right wall
+    if (j == WIDTH - 1) cout << WALL; // Draw right wall
 }
 
 void DrawGameBoard() {
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
             DrawGameBoardCell(i, j);
         }
         cout << endl;
     }
 }
+
+// ----------------- SCORE DISPLAY FUNCTIONS -----------------
 
 void DisplayHighScores(bool includeSpacing) {
     int posY;
@@ -134,10 +140,12 @@ void DisplayHighScores(bool includeSpacing) {
 }
 
 void DisplayScoreAndHighScores() {
-    gotoxy(0, height + 2);
+    gotoxy(0, HEIGHT + 2);
     cout << "Score:" << score << endl;
     DisplayHighScores();
 }
+
+// ----------------- MAIN DRAW FUNCTION -----------------
 
 void Draw() {
     gotoxy(0, 0);

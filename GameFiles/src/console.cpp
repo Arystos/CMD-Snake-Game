@@ -4,18 +4,17 @@
 
 using namespace std;
 
-void gotoxy(int x, int y) {
+void gotoxy(int x, int y) { // Move cursor to x, y
     COORD coord;
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+// Resizes, repositions, and modifies console window properties.
 void ResizeAndCenterConsole(int width, int height) {
-    // Set console title
-    SetConsoleTitle(TEXT("Snake Game")); // Use the TEXT macro to convert the string to a wide-character string
 
-    // Resizes, repositions, and modifies console window properties.
+    SetConsoleTitle(TEXT("Snake Game")); // Used the TEXT macro to convert the string to a wide-character string
 
     // Get handle to console and desktop windows
     HWND console = GetConsoleWindow();
