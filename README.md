@@ -11,7 +11,7 @@ This is a console-based version of the classic Snake game, written in C++. Navig
 ## Installation
 
 1. Clone the repository to your local machine.
-2. Download g++ library from: https://www.msys2.org/ and follow the instructions.
+2. Download g++ library from: [https://www.msys2.org/](https://sourceforge.net/projects/mingw/files/latest/download) and follow the instructions.
 3. Compile the game using a C++ compiler (e.g., `g++ -o SnakeGame main.cpp`).
 4. Run the game with `snake.exe` command
 5. Enjoy
